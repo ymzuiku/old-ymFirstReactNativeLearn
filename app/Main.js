@@ -8,17 +8,49 @@ import ReactNative, {
     Animated
 } from 'react-native'
 
+import An, {
+    timings,
+    springs,
+    playParallel,
+    playSequence,
+} from './An.js'
+
 class Main extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            textX: new Animated.Value(0),
+            textY: new Animated.Value(0)
+        }
+        this.initProps()
+    }
+    initProps(){
+        this.isMove = false
+        this.pTextMiddle = {
+            onStartShouldSetResponder:this.touchText,
+            style:{
+                fontSize:26,
+                paddingLeft:this.state.textX,
+                paddingTop:this.state.textY,
+                backgroundColor:'#ffffff00'
+            },
+        }
     }
     render() {
         return (
             <View style={[ss.middle]}>
-                <Text style={[{fontSize:50}]}>Hello world</Text>
+                <Animated.Text {...this.pTextMiddle}>Hello World,Touch Me</Animated.Text>
             </View>
         )
+    }
+
+    touchText = ()=> {
+        let movePoint = 70
+        if (this.isMove) {
+            movePoint = 0
+        }
+        let anMove = timings([this.state.textX, this.state.textY], movePoint, 350)
+        playParallel(anMove, ()=>{this.isMove = !this.isMove})
     }
 }
 
