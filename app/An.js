@@ -19,6 +19,7 @@ export function playParallel(anima, func = ()=>{}) {
         anima.start(func())
     }
 }
+
 export function playSequence(anima, delay = 0, func = ()=>{}) {
     if (delay == 0) {
         Animated.sequence(anima).start(func())
